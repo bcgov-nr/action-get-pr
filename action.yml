@@ -34,9 +34,23 @@ runs:
         # Get PR number (different process for merge queue)
         if [ ${{ github.event_name }} == 'pull_request' ]
         then
+          echo "Event type: pull request"
           pr=${{ github.event.number }}
-        else
+        elif [ ${{ github.event_name }} == 'merge_group' ]
+        then
+          echo "Event type: merge queue"
           pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
+        elif [ ${{ github.event_name }} == 'push' ]
+        then
+          echo "Event type: push"
+          pr=$(echo ${{ github.event.head_commit.message }} |( grep -Eo "pr-[0-9]+" || true )| cut -d '-' -f2)
+          if [ -z "${pr}" ]
+          then
+            echo "No PR number found. Was this push triggered by a squashed PR merge?"
+            pr=""
+          fi
+        else
+          echo "Event type: unknown or unexpected"
         fi
 
         echo "Summary ---"
