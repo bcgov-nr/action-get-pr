@@ -37,11 +37,12 @@ runs:
           echo "Event type: pull request"
           pr=${{ github.event.number }}
         elif [ ${{ github.event_name }} == 'merge_group' ]
-          pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
+        then
           echo "Event type: merge queue"
+          pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
         else
-          # pr=$(echo ${{ github.event.ref }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
           echo "Event type: not pull request or merge queue"
+          # pr=$(echo ${{ github.event.ref }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
         fi
 
         echo "Summary ---"
