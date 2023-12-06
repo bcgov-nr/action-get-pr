@@ -4,9 +4,12 @@
 [![MIT License](https://img.shields.io/github/license/bcgov-nr/action-get-pr.svg)](/LICENSE)
 [![Lifecycle](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
-# Get PR Number for Merges and Queues
+# Get PR Number - Merges and Queues
 
-PR numbers are easy to come by in PRs, but passing those same numbers to merge queues and PR-backed merges can get tricky.  This action makes that convenient.
+PR numbers are easy to come by in PRs, but passing those same numbers to merge queues and PR-backed merges can get tricky.  This action makes that convenient in the following cases:
+* PR merge queues
+* Merged PR workflows
+* PRs themselves (just for consistency)
 
 # Usage
 
