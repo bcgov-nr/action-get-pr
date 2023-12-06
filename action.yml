@@ -44,7 +44,7 @@ runs:
         then
           echo "Event type: push"
           pr=$(echo ${{ github.event.head_commit.message }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
-          if [ -z "${{ pr }}" ]
+          if [ -z "${pr}" ]
           then
             echo "No PR number found. Was this push triggered by a squashed PR merge?"
             pr=""
