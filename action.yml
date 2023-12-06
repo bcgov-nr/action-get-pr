@@ -40,9 +40,10 @@ runs:
         then
           echo "Event type: merge queue"
           pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
-        else
-          echo "Event type: not pull request or merge queue"
-          # pr=$(echo ${{ github.event.ref }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
+        elif [ ${{ github.event_name }} == 'push' ]
+          echo "Event type: push"
+          echo ${{ github.event.head_commit.message }}
+          # pr=$(echo ${{ github.event.head_commit }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
         fi
 
         echo "Summary ---"
