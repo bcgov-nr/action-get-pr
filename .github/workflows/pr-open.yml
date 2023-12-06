@@ -20,8 +20,12 @@ jobs:
         run: |
           echo "github.event_name: ${{ github.event_name }}"
           echo "github.event.action: ${{ github.event.action }}"
-          echo "github.event: ${{ github.event }}"
 
+      - name: Dump GitHub Context.Event
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "${GITHUB_CONTEXT}" | jq .
 
   # Test for PR, merge queue and merge to main
   get-pr:
