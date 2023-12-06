@@ -41,9 +41,12 @@ runs:
           echo "Event type: merge queue"
           pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
         elif [ ${{ github.event_name }} == 'push' ]
+        then
           echo "Event type: push"
           echo ${{ github.event.head_commit.message }}
           # pr=$(echo ${{ github.event.head_commit }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
+        else
+          echo "Event type: unknown or unexpected"
         fi
 
         echo "Summary ---"
