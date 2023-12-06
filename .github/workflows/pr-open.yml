@@ -27,7 +27,9 @@ jobs:
       - uses: actions/checkout@v4
       - id: vars
         # uses: ./
-        run: echo "pr=${{ github.event.number }}" >> $GITHUB_OUTPUT
+        run: |
+          echo "pr=${{ github.event.number }}"
+          echo "pr=${{ github.event.number }}" >> $GITHUB_OUTPUT
 
   verify-pr:
     name: Verify PR number
@@ -37,6 +39,8 @@ jobs:
       - name: Verify PR number
         run: |
           set -eux
+          echo "PR: ${{ steps.vars.outputs.pr }}"
+          
           # Check
           if [ -z ${{ needs.get-pr.outputs.pr }} ]
           then
