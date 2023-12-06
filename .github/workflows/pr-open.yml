@@ -2,22 +2,37 @@ name: PR
 
 on:
   pull_request:
+  merge_group:
+  merge: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  # Dump GitHub Context.Event
+  dump:
+    name: Dump GitHub Context.Event
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Dump GitHub Context.Event
+        run: echo "${{ toJson(github.event) }}" | sed -r 's/#/\\#/g'
+  
+  # Test for PR, merge queue and merge to main
   test:
-    needs: [build]
-    permissions:
-      packages: write
-    name: Retag
+    name: Get PR number
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - id: vars
         uses: ./
         
-      - name: Echo PR number
-        run: echo "PR: ${{ steps.vars.outputs.pr }}"
+      - name: Verify PR number
+        run: |
+          # Check
+          if [ -z ${{ steps.vars.outputs.pr }} ]
+          then
+            echo "No PR number"
+            exit 1
+          fi
+          echo "PR: ${{ steps.vars.outputs.pr }}"
