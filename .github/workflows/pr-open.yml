@@ -28,8 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: vars
-        # uses: ./
-        run: echo "pr=1" >> $GITHUB_OUTPUT
+        uses: ./
 
   verify-pr:
     name: Verify PR number
