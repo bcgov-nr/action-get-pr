@@ -18,19 +18,27 @@ jobs:
         run: echo "${{ toJson(github.event) }}" | sed -r 's/#/\\#/g'
   
   # Test for PR, merge queue and merge to main
-  test:
+  get-pr:
     name: Get PR number
     runs-on: ubuntu-22.04
+    outputs:
+      pr: ${{ steps.vars.outputs.pr }}
     steps:
       - uses: actions/checkout@v4
       - id: vars
-        uses: ./
-        
+        # uses: ./
+        run: echo "pr=${{ github.event.number }}" >> $GITHUB_OUTPUT
+
+  verify-pr:
+    name: Verify PR number
+    needs: [get-pr]
+    runs-on: ubuntu-22.04
+    steps:
       - name: Verify PR number
         run: |
           set -eux
           # Check
-          if [ -z ${{ steps.vars.outputs.pr }} ]
+          if [ -z ${{ needs.get-pr.outputs.pr }} ]
           then
             echo "No PR number"
             exit 1
