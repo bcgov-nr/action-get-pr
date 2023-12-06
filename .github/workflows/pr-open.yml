@@ -20,7 +20,9 @@ jobs:
         run: |
           echo "github.event_name: ${{ github.event_name }}"
           echo "github.event.action: ${{ github.event.action }}"
-  
+          echo "github.event: ${{ github.event }}"
+
+
   # Test for PR, merge queue and merge to main
   get-pr:
     name: Get PR number

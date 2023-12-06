@@ -29,8 +29,6 @@ runs:
     - id: vars
       shell: bash
       run: |
-        set -eux
-        
         # Get PR number (different process for merge queue)
         if [ ${{ github.event_name }} == 'pull_request' ]
         then
