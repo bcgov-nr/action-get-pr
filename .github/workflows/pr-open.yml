@@ -34,14 +34,13 @@ jobs:
   verify-pr:
     name: Verify PR number
     needs: [get-pr]
+    env:
+      pr: ${{ needs.get-pr.outputs.pr }}
     runs-on: ubuntu-22.04
     steps:
       - name: Verify PR number
         run: |
           # Check needs.get-pr.outputs.pr
-          if [ -z ${{ needs.get-pr.outputs.pr }} ]
-          then
-            echo "No PR number"
-            exit 1
-          fi
-          echo "PR: ${{ steps.vars.outputs.pr }}"
+          [ ! -z ${{ env.pr }} ]|| \
+            echo "No PR number" && exit 1
+          echo "PR: ${{ env.pr }}"
