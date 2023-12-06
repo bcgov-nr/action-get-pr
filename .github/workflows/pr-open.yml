@@ -28,6 +28,7 @@ jobs:
         
       - name: Verify PR number
         run: |
+          set -eux
           # Check
           if [ -z ${{ steps.vars.outputs.pr }} ]
           then
