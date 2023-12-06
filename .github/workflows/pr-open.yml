@@ -1,23 +1,46 @@
-name: PR
+name: Test
 
 on:
+  merge_group:
   pull_request:
+  push:
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
-    needs: [build]
-    permissions:
-      packages: write
-    name: Retag
+  # Dump GitHub Context.Event
+  dump:
+    name: Dump GitHub Context.Event
     runs-on: ubuntu-22.04
+    steps:
+      - name: Dump GitHub Context.Event
+        run: echo "${{ toJson(github.event) }}" | sed -r 's/#/\\#/g'
+  
+  # Test for PR, merge queue and merge to main
+  get-pr:
+    name: Get PR number
+    runs-on: ubuntu-22.04
+    outputs:
+      pr: ${{ steps.vars.outputs.pr }}
     steps:
       - uses: actions/checkout@v4
       - id: vars
-        uses: ./
-        
-      - name: Echo PR number
-        run: echo "PR: ${{ steps.vars.outputs.pr }}"
+        # uses: ./
+        run: echo "pr=1" >> $GITHUB_OUTPUT
+
+  verify-pr:
+    name: Verify PR number
+    needs: [get-pr]
+    env:
+      pr: ${{ needs.get-pr.outputs.pr }}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Verify PR number
+        run: |
+          # Check needs.get-pr.outputs.pr
+          [ ! -z ${{ env.pr }} ]|| \
+            (echo "No PR number" && exit 1)
+          echo "PR: ${{ env.pr }}"
