@@ -4,7 +4,7 @@ on:
   merge_group:
   pull_request:
   push:
-    # branches: [main]
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,14 +17,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Event details
-        run: |
-          echo "github.event_name: ${{ github.event_name }}"
-          echo "github.event.action: ${{ github.event.action }}"
-
-      - name: Dump GitHub Context.Event
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.event.action: ${{ github.event.action }}"
           echo "${GITHUB_CONTEXT}" | jq .
 
   # Test for PR, merge queue and merge to main
