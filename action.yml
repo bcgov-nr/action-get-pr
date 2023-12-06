@@ -53,6 +53,13 @@ runs:
           echo "Event type: unknown or unexpected"
         fi
 
+        # Validate PR number
+        if [ ! "${PR_NO}" =~ ^[0-9]+$ ]; then
+          echo "PR number format incorrect: ${pr}"
+          exit 1
+        fi
+
+        # Output PR number
         echo "Summary ---"
         echo -e "\tPR: ${pr}"
         echo "pr=${pr}" >> $GITHUB_OUTPUT
