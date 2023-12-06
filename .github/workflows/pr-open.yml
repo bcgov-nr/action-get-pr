@@ -8,23 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # QuickStart apps build from the same dirs as their Dockerfiles
-  build:
-    permissions:
-      packages: write
-    name: Build
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./
-        with:
-          package: backend
-          keep_versions: 10
-          repository: bcgov/quickstart-openshift
-          tag: ${{ github.event.number }}
-
-  # Anything can be retagged if a fallback image exists (e.g. test)
-  retag:
+  test:
     needs: [build]
     permissions:
       packages: write
@@ -32,29 +16,8 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - uses: ./
-        with:
-          package: backend
-          keep_versions: 10
-          repository: bcgov/quickstart-openshift
-          tag: ${{ github.event.number }}-retag
-          tag_fallback: test
-          triggers: ('backend/')
-
-
-  # FOM apps build from repo root, above their Dockerfiles (extra params)
-  advanced:
-    permissions:
-      packages: write
-    name: Advanced
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./
-        with:
-          package: api
-          build_context: .
-          build_file: api/Dockerfile
-          keep_versions: 10
-          repository: bcgov/nr-fom
-          tag: ${{ github.event.number }}
+      - id: vars
+        uses: ./
+        
+      - name: Echo PR number
+        run: echo "PR: ${{ steps.vars.outputs.pr }}"
