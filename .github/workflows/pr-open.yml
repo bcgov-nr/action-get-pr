@@ -1,0 +1,23 @@
+name: PR
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    needs: [build]
+    permissions:
+      packages: write
+    name: Retag
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - id: vars
+        uses: ./
+        
+      - name: Echo PR number
+        run: echo "PR: ${{ steps.vars.outputs.pr }}"
