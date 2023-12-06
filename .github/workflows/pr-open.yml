@@ -13,7 +13,7 @@ concurrency:
 jobs:
   # Dump GitHub Context.Event
   dump:
-    name: Dump GitHub Context.Event
+    name: Event details
     runs-on: ubuntu-22.04
     steps:
       - name: Event details
@@ -28,6 +28,7 @@ jobs:
     outputs:
       pr: ${{ steps.vars.outputs.pr }}
     steps:
+      - uses: actions/checkout@v4
       - id: vars
         uses: ./
 
