@@ -42,5 +42,5 @@ jobs:
         run: |
           # Check needs.get-pr.outputs.pr
           [ ! -z ${{ env.pr }} ]|| \
-            echo "No PR number" && exit 1
+            (echo "No PR number" && exit 1)
           echo "PR: ${{ env.pr }}"
