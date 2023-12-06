@@ -29,14 +29,16 @@ runs:
     - id: vars
       shell: bash
       run: |
+        set -eux
+        
         # Get PR number (different process for merge queue)
         if [ ${{ github.event_name }} == 'pull_request' ]
         then
-          tag=${{ github.event.number }}
+          pr=${{ github.event.number }}
         else
-          tag=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
+          pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
         fi
 
         echo "Summary ---"
-        echo -e "\tTag (PR no): ${tag}"
-        echo "tag=${tag}" >> $GITHUB_OUTPUT
+        echo -e "\tPR: ${pr}"
+        echo "pr=${pr}" >> $GITHUB_OUTPUT
