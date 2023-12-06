@@ -16,8 +16,10 @@ jobs:
     name: Dump GitHub Context.Event
     runs-on: ubuntu-22.04
     steps:
-      - name: Dump GitHub Context.Event
-        run: echo "${{ toJson(github.event) }}" | sed -r 's/#/\\#/g'
+      - name: Event details
+        run: |
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.event.action: ${{ github.event.action }}"
   
   # Test for PR, merge queue and merge to main
   get-pr:

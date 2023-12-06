@@ -34,9 +34,14 @@ runs:
         # Get PR number (different process for merge queue)
         if [ ${{ github.event_name }} == 'pull_request' ]
         then
+          echo "Event type: pull request"
           pr=${{ github.event.number }}
-        else
+        elif [ ${{ github.event_name }} == 'merge_group' ]
           pr=$(echo ${{ github.event.merge_group.head_ref }} | grep -Eo "queue/main/pr-[0-9]+" | cut -d '-' -f2)
+          echo "Event type: merge queue"
+        else
+          # pr=$(echo ${{ github.event.ref }} | grep -Eo "pr-[0-9]+" | cut -d '-' -f2)
+          echo "Event type: not pull request or merge queue"
         fi
 
         echo "Summary ---"
