@@ -14,7 +14,7 @@ jobs:
   # Dump GitHub Context.Event
   dump:
     name: Event details
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Event details
         env:
@@ -27,7 +27,7 @@ jobs:
   # Test for PR, merge queue and merge to main
   get-pr:
     name: Get PR number
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       pr: ${{ steps.vars.outputs.pr }}
     steps:
@@ -40,7 +40,7 @@ jobs:
     needs: [get-pr]
     env:
       pr: ${{ needs.get-pr.outputs.pr }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Verify PR number
         run: |
