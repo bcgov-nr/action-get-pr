@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 async function main() {
+  console.log("::warning::This Action has moved to bcgov/actions/get-pr. Please update your workflow to use bcgov/actions/get-pr instead. See: https://github.com/bcgov/actions/tree/main/get-pr");
   const debug = process.env.INPUT_DEBUG === 'true';
   const token = process.env.INPUT_GITHUB_TOKEN || process.env.GITHUB_TOKEN;
   const eventName = process.env.TEST_EVENT_NAME || process.env.GITHUB_EVENT_NAME;
